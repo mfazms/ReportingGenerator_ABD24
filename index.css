@@ -1,0 +1,17 @@
+body{
+    font-family: Arial, Helvetica, sans-serif;
+    margin: 0;
+    padding: 2em 4em;
+    text-decoration: none;
+}
+
+.submit{
+    background-color: red;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 1em;
+}
+#querySlot{
+    width: 100%;
+}

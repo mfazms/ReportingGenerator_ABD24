@@ -12,7 +12,9 @@
         include 'function.php';
         include_once 'database.php';
     ?>
-    <h1>Report Generator</h1>
+    <a href="index.php">
+        <h3>Report Generator</h3>
+    </a>
     <form method="POST" class="row g-3">
         <div class="input-group mb-3">
             <input type="text" id="query" name="query" class="form-control" placeholder="Insert your query here" aria-label="Insert your query here" aria-describedby="btn-exec">
@@ -26,41 +28,46 @@
         <?php
 
             if($_SERVER['REQUEST_METHOD']=="POST"){
-
                 $query = $_POST['query'];
-                echo "<p>user inputted: $query</p>";
-                if("select" !== strtolower(substr($query,0,6))){
+                echo "<p>INPUTTED QUERY: [$query]</p>";
+                if("select" != strtolower(substr($query,0,6))){
                     echo "not allowed";
                     die;
                 }
-            }
-            $res = $conn->query($query);
-            if($res){
-                
-                $data = [];
-                while ($row = mysqli_fetch_assoc($res)) {
-                    $data[] = $row;
-                }
-                $transposedData = [];
-                foreach ($data as $rowKey => $row) {
-                    foreach ($row as $colKey => $value) {
-                        $transposedData[$colKey][$rowKey] = $value;
+                $res = $conn->query($query);
+                if($res){
+                    ParseQuery($query);
+                    echo "<p>SEL [{$_SESSION['sel_from']}] FROM</p>";
+                    echo "<p>FROM [{$_SESSION['from_end']}]</p>";
+                    foreach($_SESSION['cols'] as $s){
+                        echo "<p>[{$s}]</p>";
                     }
+                    $normal = [];
+                    while ($row = mysqli_fetch_assoc($res)) {
+                        $normal[] = $row;
+                    }
+                    $switched = [];
+                    foreach ($normal as $rowKey => $row) {
+                        foreach ($row as $colKey => $value) {
+                            $switched[$colKey][$rowKey] = $value;
+                        }
+                    }
+                    $_SESSION['normal'] = $normal;
+                    $_SESSION['switched'] = $switched;
                 }
-        ?>
-        <!-- <button class="btn btn-primary" onclick="toggleView()">Toggle View</button> -->
-        <button type="button" class="btn btn-primary" data-bs-toggle="button" onclick="toggleView()">Pivot</button>
-
-        <div id="originalTable" style="display: block;">
-            <?php echo generateTableHTML($data); ?>
-        </div>
-        <div id="transposedTable" style="display: none;">
-            <?php echo generateTableHTML($transposedData, true); ?>
-        </div>
-        <?php
-                // echo generateTableHTML($data);
-                // echo generateTableHTML($transposedData,true);
             }
+            if($_SESSION['normal'] && $_SESSION['switched']){
+
+        ?>
+            <button type="button" class="btn btn-primary" onclick="toggleView()" id="btn-pivot">Pivot</button>
+            <a href="groupby.php" class="btn btn-primary" role="button" aria-disabled="false">Group By</a>
+            <a href="case.php" class="btn btn-primary" role="button" aria-disabled="false">Case</a>
+            <a href="export.php" class="btn btn-primary" role="button" aria-disabled="false">Export</a>
+        <?php
+            
+            include 'table.php';
+            }
+
         ?>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

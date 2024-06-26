@@ -7,6 +7,7 @@
     $conn = "";
 
     $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
+    session_start();
     // if($conn){
     //     echo "connected to DB";
     // }

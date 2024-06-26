@@ -15,24 +15,16 @@
     <a href="index.php">
         <h3>Report Generator</h3>
     </a>
-    <h4>Group By</h4>
+    <h4>Case</h4>
     <div class="input-group mb-3">
         <span class="input-group-text" id="basic-addon1">Your submitted query</span>
         <input type="text" readonly class="form-control" placeholder="<?php echo htmlspecialchars($_SESSION['submittedQuery']); ?>">
     </div>
     <form method="POST" class="row row-cols-auto align-items-center mb-3">
         
-        <div class="col">Select</div>
+        <div class="col">Select where</div>
         <div class="col">
-            <select class="form-select" name="aggregate" id="aggregate" required>
-                <option selected disabled value="">Choose...</option>
-                <option value="count">Count</option>
-                <option value="avg">Average</option>
-                <option value="sum">Sum</option>
-            </select>
-        </div>
-        <div class="col">
-            <select class="form-select" name="aggregateCol" id="aggregateCol" required>
+            <select class="form-select" name="caseCol" id="caseCol" required>
                 <option selected disabled value="">Choose...</option>
                 <?php
                     foreach($_SESSION['cols'] as $col){
@@ -41,20 +33,29 @@
                 ?>
             </select>
         </div>
-        <div class="col">group by</div>
+        <div class="col">is</div>
         <div class="col">
-            <select class="form-select" name="groupbyCol" id="groupbyCol" required>
+            <select class="form-select" name="caseOpt" id="caseOpt" required>
+                <option selected disabled value="">Choose...</option>
+                <option value=">">></option>
+                <option value="=">=</option>
+                <option value="<"><</option>
+            </select>
+        </div>
+        <div class="col">than</div>
+
+        <div class="col">
+            <select class="form-select" name="caseYear" id="caseYear" required>
                 <option selected disabled value="">Choose...</option>
                 <?php
-                    foreach($_SESSION['cols'] as $col){
-                        echo "<option value='$col'>$col</option>";
+                    for($i=2000; $i<=2024; $i++){
+                        echo "<option value='$i'>$i</option>";
                     }
                 ?>
             </select>
         </div>
         <div class="col">
-            <!-- <button type="submit" class="btn btn-primary" id="groupby">Execute</button> -->
-            <input class="btn btn-primary" type="submit" value="Execute Group By" id="btn-exec"></input>
+            <input class="btn btn-primary" type="submit" value="Execute Case" id="btn-exec"></input>
         </div>
     </form>
     <?php
@@ -63,7 +64,7 @@
             echo'<button type="button" class="btn btn-primary" onclick="toggleView()" id="btn-pivot">Pivot</button>';
             echo'<a href="export.php" class="btn btn-primary" role="button" aria-disabled="false">Export</a>';
             echo'</div>';
-            GroupBy($conn, $_POST['aggregate'], $_POST['aggregateCol'],$_POST['groupbyCol']);
+            CaseFilter($conn,$_POST['caseCol'],$_POST['caseOpt'],$_POST['caseYear']);
             table($_SESSION['temp'],$_SESSION['tempSwitched']);
         }
     ?>

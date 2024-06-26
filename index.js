@@ -5,10 +5,10 @@ function toggleView() {
     if (originalTable.style.display === 'none') {
         originalTable.style.display = 'block';
         transposedTable.style.display = 'none';
-        btnPivot.textContent = '123';
+        btnPivot.textContent = 'Pivot';
     } else {
         originalTable.style.display = 'none';
         transposedTable.style.display = 'block';
-        btnPivot.textContent = '456';
+        btnPivot.textContent = 'Unpivot';
     }
 }

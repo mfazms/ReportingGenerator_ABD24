@@ -1,8 +1,8 @@
-pivot ganti keunpivot
-groupby cuma 2 col
-ui insert nama database
-public repo
-case: namaColumn >=< valuePilihan
-sofar pake tahun aja
+Y pivot ganti keunpivot
+Y groupby cuma 2 col
+ui insert nama database not prioritas
+Y public repo
+Y case: namaColumn >=< valuePilihan
+Y sofar pake tahun aja
 
 dahlah simplein aj

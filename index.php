@@ -21,55 +21,33 @@
             <input class="btn btn-primary" type="submit" value="Execute Query" id="btn-exec"></input>
         </div>
     </form>
-    <div>
-
-    </div>
-    <div class="result">
         <?php
-
             if($_SERVER['REQUEST_METHOD']=="POST"){
                 $query = $_POST['query'];
-                echo "<p>INPUTTED QUERY: [$query]</p>";
+                // echo "<p>INPUTTED QUERY: [$query]</p>";
                 if("select" != strtolower(substr($query,0,6))){
-                    echo "not allowed";
+                    echo "query not allowed";
                     die;
                 }
-                $res = $conn->query($query);
-                if($res){
-                    ParseQuery($query);
-                    echo "<p>SEL [{$_SESSION['sel_from']}] FROM</p>";
-                    echo "<p>FROM [{$_SESSION['from_end']}]</p>";
-                    foreach($_SESSION['cols'] as $s){
-                        echo "<p>[{$s}]</p>";
-                    }
-                    $normal = [];
-                    while ($row = mysqli_fetch_assoc($res)) {
-                        $normal[] = $row;
-                    }
-                    $switched = [];
-                    foreach ($normal as $rowKey => $row) {
-                        foreach ($row as $colKey => $value) {
-                            $switched[$colKey][$rowKey] = $value;
-                        }
-                    }
-                    $_SESSION['normal'] = $normal;
-                    $_SESSION['switched'] = $switched;
-                }
+                ExecuteQuery($conn,$query,$_SESSION['normal'],$_SESSION['switched']);
+                ParseQuery($query);
             }
             if($_SESSION['normal'] && $_SESSION['switched']){
-
-        ?>
-            <button type="button" class="btn btn-primary" onclick="toggleView()" id="btn-pivot">Pivot</button>
-            <a href="groupby.php" class="btn btn-primary" role="button" aria-disabled="false">Group By</a>
-            <a href="case.php" class="btn btn-primary" role="button" aria-disabled="false">Case</a>
-            <a href="export.php" class="btn btn-primary" role="button" aria-disabled="false">Export</a>
-        <?php
-            
-            include 'table.php';
+                ?>
+                <div class="input-group mb-3">
+                    <span class="input-group-text" id="basic-addon1">Your submitted query</span>
+                    <input type="text" readonly class="form-control" placeholder="<?php echo htmlspecialchars($_SESSION['submittedQuery']); ?>">
+                </div>
+                <?php
+                echo'<div class="mb-3">';
+                echo'<button type="button" class="btn btn-primary" onclick="toggleView()" id="btn-pivot">Pivot</button>';
+                echo'<a href="groupby.php" class="btn btn-primary" role="button" aria-disabled="false">Group By</a>';
+                echo'<a href="case.php" class="btn btn-primary" role="button" aria-disabled="false">Case</a>';
+                echo'<a href="export.php" class="btn btn-primary" role="button" aria-disabled="false">Export</a>';
+                echo'</div>';
+                table($_SESSION['normal'],$_SESSION['switched']);
             }
-
         ?>
-    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="index.js"></script>
 </body>

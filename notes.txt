@@ -1,0 +1,23 @@
+26 jun sore
+Y pivot ganti keunpivot
+Y groupby cuma 2 col
+ui insert nama database not prioritas
+Y public repo
+Y case: namaColumn >=< valuePilihan
+Y sofar pake tahun aja
+
+dahlah simplein aj
+
+ganti normal ke unpivoted
+ganti switched ke pivoted
+
+
+27 jun sore:
+Y attach export
+Y case isi value
+Y tombol back
+
+Y case datatype
+Y case asc desc
+Y groupby petik
+homepage choose table, checkbox col

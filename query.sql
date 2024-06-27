@@ -1,5 +1,7 @@
 sELECT * FROM `HumanResources.Department`
 
+SELECT * FROM `Production.TransactionHistory`
+
 sELECT departmentID,name,groupname, modifieddate FROM `HumanResources.Department`
 
 sELECT groupname,count(departmentid), modifieddate FROM `HumanResources.Department`

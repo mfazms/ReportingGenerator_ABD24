@@ -13,7 +13,7 @@
         include_once 'database.php';
     ?>
     <a href="index.php">
-        <h3>Report Generator</h3>
+        <h2>Home</h3>
     </a>
     <h4>Group By</h4>
     <div class="input-group mb-3">
@@ -59,15 +59,18 @@
     </form>
     <?php
         if($_SERVER['REQUEST_METHOD']=="POST"){
-            echo'<div class="mb-3">';
-            echo'<button type="button" class="btn btn-primary" onclick="toggleView()" id="btn-pivot">Pivot</button>';
-            echo'<a href="export.php" class="btn btn-primary" role="button" aria-disabled="false">Export</a>';
-            echo'</div>';
+    ?>
+            <div class="mb-3">
+            <button type="button" class="btn btn-primary" onclick="toggleView()" id="btn-pivot">Pivot</button>
+            <button class="btn btn-primary" onclick="Export()">Export</button>
+            </div>
+    <?php
             GroupBy($conn, $_POST['aggregate'], $_POST['aggregateCol'],$_POST['groupbyCol']);
             table($_SESSION['temp'],$_SESSION['tempSwitched']);
         }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script src="index.js"></script>
+    <script src="table2excel.js"></script>
 </body>
 </html>

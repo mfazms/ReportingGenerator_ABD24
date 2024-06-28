@@ -23,6 +23,30 @@
             <input class="btn btn-primary" type="submit" value="Login" id="btn-login"></input>
         </div>
     </form>
+    <!-- <form method="POST" class="row justify-content-md-center g-3" >
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-4">
+                <input type="text" id="username" name="username" class="form-control" placeholder="Username" aria-label="Username" aria-describedby="btn-exec" required>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-4">
+                <input type="text" id="password" name="password" class="form-control" placeholder="Password" aria-label="Username" aria-describedby="btn-exec" required>
+            </div>
+        </div>
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-4">
+                <input type="text" id="db_name" name="db_name" class="form-control" placeholder="Database name" aria-label="Username" aria-describedby="btn-exec" required>
+            </div>
+        </div>
+        <div class="row justify-content-md-center mt-3">
+            <div class="col col-lg-4">
+                <div class="d-grid">
+                    <input class="btn btn-primary" type="submit" value="Login" id="btn-login"></input>
+                </div>
+            </div>
+        </div>
+    </form> -->
         <?php
             session_start();
             if($_SERVER['REQUEST_METHOD']=="POST"){

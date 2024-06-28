@@ -9,44 +9,39 @@
     $db_user = "root";
     $db_pass = "";
     $db_name = $_SESSION['db_name'];
-    // function dbExist($req_db_name){
-    //     $temp = mysqli_connect($db_server, $db_user, $db_pass);
-    //     if (!$temp) {
-    //         die("Connection failed: " . mysqli_connect_error());
-    //     }
-    //     $query = "SHOW DATABASES LIKE '$req_db_name'";
-    //     $result = mysqli_query($temp, $query);
-    //     if (mysqli_num_rows($result) > 0) {
-    //         mysqli_close($temp);
-    //         return true;
-    //     } else {
-    //         mysqli_close($temp);
-    //         return false;
-    //     }
-    // }
-    // $db_name = "repgen";
-    
-    // $_SESSION['db_name'] = $db_name;
-    // if($_SESSION['tryingToLogIn']){
-    //     $temp = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
-    //     if($temp){
-    //         $_SESSION['tryingToLogIn'] = false;
-    //         header("Location: index.php");
-    //         exit;
-    //     }
-    //     header("Location: login.php");
-    //     exit;
-    // }
 
     $conn = mysqli_connect($db_server, $db_user, $db_pass, $db_name);
     if($conn){
-        
+        // if(!isset($_SESSION['tables'])){
+        //     $query = "SHOW TABLES";
+        //     $res = mysqli_query($conn, $query);
+        //     if ($res) {
+        //         $tables = array();
+        //         while ($row = mysqli_fetch_row($res)) {
+        //             $tables[] = $row[0];
+        //         }
+        //         $_SESSION['tables'] = $tables;
+        //         foreach($tables as $table){
+        //             $queryCol = "SHOW COLUMNS FROM `$table`";
+        //             // echo "$queryCol,";
+        //             $resCol = mysqli_query($conn, $queryCol);
+        //             if ($resCol) {
+        //                 $columns = array();
+        //                 while ($row = mysqli_fetch_row($resCol)) {
+        //                     $columns[] = $row[0];
+        //                 }
+        //                 $_SESSION["table_$table"] = $columns;
+        //             }
+        //         }
+        //     }
+        // }
     }
     else{
         echo "sometin went wrong lol";
 	    header("Location: login.php");
         exit;
     }
+    
 ?>
 <!-- <form method="POST" action="index.php" class="row g-3">
         <div class="input-group mb-3">

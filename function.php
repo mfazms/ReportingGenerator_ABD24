@@ -91,15 +91,15 @@ function ExecuteQuery($conn, $query, &$unpivoted, &$pivoted)
 function GroupBy($conn, $aggregate, $aggregateCol, $groupbyCol){
     $query = "select $groupbyCol, ";
     $query .= "$aggregate($aggregateCol) ";
-    $query .= "from {$_SESSION['from_end']} ";
+    $query .= "from `{$_SESSION['table']}` ";
     $query .= "group by $groupbyCol";
-    echo "[$query]";
+    // echo "[$query]";
     ExecuteQuery($conn,$query,$_SESSION['unpivoted_groupBy'],$_SESSION['pivoted_groupBy']);
 }
 function CaseFilter($conn, $dataType, $caseCol, $caseOpt, $caseValue, $caseColOrderBy, $caseOrderByType){
     echo "[$dataType]";
-    $query = "select {$_SESSION['sel_from']} ";
-    $query .= "from {$_SESSION['from_end']} ";
+    $query = "select {$_SESSION['selectedColumnsText']} ";
+    $query .= "from `{$_SESSION['table']}` ";
     if($dataType === "numeric"){
         $query .= "where $caseCol $caseOpt $caseValue";
     }
@@ -110,7 +110,7 @@ function CaseFilter($conn, $dataType, $caseCol, $caseOpt, $caseValue, $caseColOr
         $query .= "where year($caseCol) $caseOpt $caseValue";
     }
     $query .= " order by $caseColOrderBy $caseOrderByType";
-    echo "[$query]";
+    // echo "[$query]";
     ExecuteQuery($conn,$query,$_SESSION['unpivoted_case'],$_SESSION['pivoted_case']);
 }
 

@@ -1,8 +1,8 @@
 <?php
-function generateTableHTML($data, $switched) {
+function generateTableHTML($data, $isPivoted = false) {
     $html = "<table class='table table-striped'>";
-    if ($switched) {
-        // Display the transposed data
+    if ($isPivoted) {
+        // $html .= ">";
         foreach ($data as $colKey => $colData) {
             $html .= "<tr>";
             $html .= "<th>$colKey</th>";
@@ -12,8 +12,8 @@ function generateTableHTML($data, $switched) {
             $html .= "</tr>";
         }
     } else {
-        // Display the original data
         if (!empty($data)) {
+            // $html .= "id='toDownload'>";
             $html .= "<tr>";
             foreach (array_keys($data[0]) as $header) {
                 $html .= "<th scope='col'>$header</th>";
@@ -32,12 +32,12 @@ function generateTableHTML($data, $switched) {
     return $html;
 }
 
-function table($normal, $switched){
-    echo '<div class="originalTable" style="display: block;">';
-    echo generateTableHTML($normal, false);
+function table($unpivoted, $pivoted){
+    echo '<div class="unpivotedDiv" style="display: block;">';
+    echo generateTableHTML($unpivoted, false);
     echo '</div>';
-    echo '<div class="transposedTable" style="display: none;">';
-    echo generateTableHTML($switched, true);
+    echo '<div class="pivotedDiv" style="display: none;">';
+    echo generateTableHTML($pivoted, true);
     echo '</div>';
 }
 
@@ -57,7 +57,7 @@ function ParseQuery($query){
     echo "[{$_SESSION['from_end']}]";
     $_SESSION['cols'] = [];
     if($_SESSION['sel_from'] === '*'){
-        foreach (array_keys($_SESSION['normal'][0]) as $header) {
+        foreach (array_keys($_SESSION['unpivoted'][0]) as $header) {
             array_push($_SESSION['cols'], $header);
         }
     }
@@ -69,82 +69,32 @@ function ParseQuery($query){
         echo "[$col]";
     }
 }
-function ExecuteQuery($conn, $query, &$normal, &$switched)
+function ExecuteQuery($conn, $query, &$unpivoted, &$pivoted)
 {
     $res = $conn->query($query);
     if($res){
-        $resNormal = [];
+        $res_unpivoted = [];
         while ($row = mysqli_fetch_assoc($res)) {
-            $resNormal[] = $row;
+            $res_unpivoted[] = $row;
         }
-        $resSwitched = [];
-        foreach ($resNormal as $rowKey => $row) {
+        $res_pivoted = [];
+        foreach ($res_unpivoted as $rowKey => $row) {
             foreach ($row as $colKey => $value) {
-                $resSwitched[$colKey][$rowKey] = $value;
+                $res_pivoted[$colKey][$rowKey] = $value;
             }
         }
-        $normal = $resNormal;
-        $switched = $resSwitched;
+        $unpivoted = $res_unpivoted;
+        $pivoted = $res_pivoted;
     }
 }
-// function ExecuteQuery($conn, $query, &$normal, &$switched)
-// {
-//     $res = $conn->query($query);
-//     if ($res) {
-//         $fields = [];
-//         while ($field = $res->fetch_field()) {
-//             $fields[] = $field->table . '.' . $field->name;
-//         }
 
-//         $resNormal = [];
-//         while ($row = $res->fetch_assoc()) {
-//             $formattedRow = [];
-//             foreach ($fields as $field) {
-//                 list($table, $name) = explode('.', $field);
-//                 $formattedRow[$field] = $row[$name];
-//             }
-//             $resNormal[] = $formattedRow;
-//         }
-
-//         $resSwitched = [];
-//         foreach ($resNormal as $rowKey => $row) {
-//             foreach ($row as $colKey => $value) {
-//                 $resSwitched[$colKey][$rowKey] = $value;
-//             }
-//         }
-
-//         $normal = $resNormal;
-//         $switched = $resSwitched;
-//     } else {
-//         die("Query failed: " . $conn->error);
-//     }
-// }
-function GetDataType($conn, $databaseName, $tableName, $columnName){
-    if (substr($tableName, 0, 1) === '`' && substr($tableName, -1) === '`') {
-        // Remove the backticks
-        $tableName = substr($tableName, 1, -1);
-    }
-    $query = "select data_type from information_schema.columns ";
-    $query .= "where lower(table_name) = lower('$tableName') and ";
-    $query .= "lower(column_name) = lower('$columnName')";
-    echo $query;
-    $res = mysqli_query($conn, $query);
-
-    if (mysqli_num_rows($res) > 0) {
-        $row = mysqli_fetch_assoc($res);
-        $dataType = $row['data_type'];
-        echo "Data type of column '$columnName' in table '$tableName' is: $dataType";
-    } else {
-        echo "Column '$columnName' not found in table '$tableName' or database '$databaseName'.";
-    }
-}
 function GroupBy($conn, $aggregate, $aggregateCol, $groupbyCol){
     $query = "select $groupbyCol, ";
     $query .= "$aggregate($aggregateCol) ";
     $query .= "from {$_SESSION['from_end']} ";
     $query .= "group by $groupbyCol";
     echo "[$query]";
-    ExecuteQuery($conn,$query,$_SESSION['temp'],$_SESSION['tempSwitched']);
+    ExecuteQuery($conn,$query,$_SESSION['unpivoted_groupBy'],$_SESSION['pivoted_groupBy']);
 }
 function CaseFilter($conn, $dataType, $caseCol, $caseOpt, $caseValue, $caseColOrderBy, $caseOrderByType){
     echo "[$dataType]";
@@ -161,21 +111,27 @@ function CaseFilter($conn, $dataType, $caseCol, $caseOpt, $caseValue, $caseColOr
     }
     $query .= " order by $caseColOrderBy $caseOrderByType";
     echo "[$query]";
-    // GetDataType($conn, $_SESSION['db_name'], $_SESSION['from_end'], $caseCol);
-    ExecuteQuery($conn,$query,$_SESSION['temp'],$_SESSION['tempSwitched']);
-}
-function generateDownloadForm($table1, $table2) {
-    $table1Json = json_encode($table1);
-    $table2Json = json_encode($table2);
-
-    echo "
-    <form id='downloadForm' method='post' action='download.php'>
-        <input type='hidden' name='tableToDownload' id='tableToDownload' value='table1'>
-        <input type='hidden' name='table1Data' value='<?php echo htmlspecialchars($table1Json, ENT_QUOTES, 'UTF-8'); ?>'>
-        <input type='hidden' name='table2Data' value='<?php echo htmlspecialchars($table2Json, ENT_QUOTES, 'UTF-8'); ?>'>
-        <button type='submit'>Download Current View as Excel</button>
-    </form>";
-
+    ExecuteQuery($conn,$query,$_SESSION['unpivoted_case'],$_SESSION['pivoted_case']);
 }
 
+function getPermissions($inputUsername, $inputPassword) {
+    if (($handle = fopen("user.csv","r")) !== FALSE) {
+        while (($data = fgetcsv($handle, 1000, ",")) !== FALSE) {
+            $cur_username = $data[0];
+            $cur_password = $data[1];
+            $permissions = $data[2];
+            // echo "<p>$inputUsername $cur_username | $inputPassword $cur_password</p>";
+            if ($cur_username == $inputUsername && $cur_password == $inputPassword) {
+                $permissionsArray = explode(',', $permissions);
+                foreach($permissionsArray as $p){
+                    echo "<p>[$p]</p>";
+                }
+                fclose($handle);
+                return $permissionsArray;
+            }
+        }
+        fclose($handle);
+    }
+    return null;
+}
 ?>

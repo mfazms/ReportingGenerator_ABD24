@@ -8,8 +8,10 @@ body{
     padding: 1em 3em;
 }
 #mynavbar{
-    width: 100%;
-    background-color: rebeccapurple;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* width: 100%; */
 }
 
 /* .queryForm{

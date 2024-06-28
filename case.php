@@ -84,11 +84,11 @@
             </div>
     <?php
             CaseFilter($conn,$_POST['caseDataType'],$_POST['caseCol'],$_POST['caseOpt'],$_POST['caseValue'],$_POST['caseColOrderBy'],$_POST['caseOrderByType']);
-            table($_SESSION['temp'],$_SESSION['tempSwitched']);
+            table($_SESSION['unpivoted_case'],$_SESSION['pivoted_case']);
         }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <script src="main.js"></script>
     <script src="table2excel.js"></script>
 </body>
 </html>

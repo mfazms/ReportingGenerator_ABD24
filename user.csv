@@ -1,4 +1,4 @@
 username, password, access
-user1, 1234, "advwork1,advwork2,advwork3"
-user2, 1234, "advwork1"
-user3, 1234, "advwork1"
+user1, 1234, "repgen,tcgoasdos,advwork1,advwork2,advwork3"
+user2, 1234, "repgen,advwork1"
+user3, 1234, "tcgoasdos,advwork1"

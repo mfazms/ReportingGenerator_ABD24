@@ -28,4 +28,4 @@ function init(){
     unpivotedDiv = unpivotedDiv[0];
     unpivotedDiv.querySelector('table').id='toDownload';
 }
-// init();
+init();

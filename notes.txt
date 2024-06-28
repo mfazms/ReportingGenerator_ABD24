@@ -21,3 +21,5 @@ Y case datatype
 Y case asc desc
 Y groupby petik
 homepage choose table, checkbox col
+
+unshow query

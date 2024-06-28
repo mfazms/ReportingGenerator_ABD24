@@ -53,7 +53,6 @@
             </select>
         </div>
         <div class="col">
-            <!-- <button type="submit" class="btn btn-primary" id="groupby">Execute</button> -->
             <input class="btn btn-primary" type="submit" value="Execute Group By" id="btn-exec"></input>
         </div>
     </form>
@@ -66,11 +65,11 @@
             </div>
     <?php
             GroupBy($conn, $_POST['aggregate'], $_POST['aggregateCol'],$_POST['groupbyCol']);
-            table($_SESSION['temp'],$_SESSION['tempSwitched']);
+            table($_SESSION['unpivoted_groupBy'],$_SESSION['pivoted_groupBy']);
         }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script src="index.js"></script>
+    <script src="main.js"></script>
     <script src="table2excel.js"></script>
 </body>
 </html>

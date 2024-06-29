@@ -73,7 +73,7 @@
             //         echo "Selected column: " . htmlspecialchars($column) . "<br>";
             //     }
             // }
-            if($_SESSION['unpivoted'] && $_SESSION['pivoted']){
+            if(isset($_SESSION['unpivoted']) && isset($_SESSION['pivoted'])){
                 ?>
                 <!-- <div class="input-group mb-3">
                     <span class="input-group-text" id="basic-addon1">Your submitted query</span>

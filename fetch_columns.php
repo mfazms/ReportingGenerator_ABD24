@@ -21,5 +21,5 @@
   //default value utk session columns adalah semua column
   //baru ketika ada form submission, di overwrite
   $_SESSION['columns']=$cols;
-  echo $out;
+  // echo $out;
 ?>

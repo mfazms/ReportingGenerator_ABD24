@@ -1,5 +1,5 @@
 <?php
-  include('database.php');
+  include_once ('database.php');
 
   $selectTable = $_POST['selectTable'];
   $_SESSION['table'] = $selectTable;

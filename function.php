@@ -123,9 +123,9 @@ function getPermissions($inputUsername, $inputPassword) {
             // echo "<p>$inputUsername $cur_username | $inputPassword $cur_password</p>";
             if ($cur_username == $inputUsername && $cur_password == $inputPassword) {
                 $permissionsArray = explode(',', $permissions);
-                foreach($permissionsArray as $p){
-                    echo "<p>[$p]</p>";
-                }
+                // foreach($permissionsArray as $p){
+                //     echo "<p>[$p]</p>";
+                // }
                 fclose($handle);
                 return $permissionsArray;
             }

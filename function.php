@@ -97,7 +97,7 @@ function GroupBy($conn, $aggregate, $aggregateCol, $groupbyCol){
     ExecuteQuery($conn,$query,$_SESSION['unpivoted_groupBy'],$_SESSION['pivoted_groupBy']);
 }
 function CaseFilter($conn, $dataType, $caseCol, $caseOpt, $caseValue, $caseColOrderBy, $caseOrderByType){
-    echo "[$dataType]";
+    // echo "[$dataType]";
     $query = "select {$_SESSION['selectedColumnsText']} ";
     $query .= "from `{$_SESSION['table']}` ";
     if($dataType === "numeric"){

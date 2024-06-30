@@ -7,6 +7,15 @@
 body{
     padding: 1em 3em;
 }
+.loginform{
+    background-color: red;
+}
+#mynavbar{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    /* width: 100%; */
+}
 
 /* .queryForm{
     background-color: beige;

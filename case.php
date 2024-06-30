@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Group By</title>
+    <title>Case</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="stylesheet" href="main.css">
 </head>
@@ -20,28 +20,17 @@
     </div>
     <form method="POST" class="row row-cols-auto gy-3 align-items-center mb-3">
         
-        <div class="col">Select</div>
+        <div class="col">Select where</div>
         <div class="col">
-            <select class="form-select" name="aggregate" id="aggregate" required>
-                <option selected disabled value="">Choose...</option>
-                <option value="count">Count</option>
-                <option value="avg">Average</option>
-                <option value="sum">Sum</option>
+            <select class="form-select" name="caseDataType" id="caseDataType" required>
+                <option selected disabled value="">Column data type</option>
+                <option value="numeric">numeric</option>
+                <option value="text">text</option>
+                <option value="year">year</option>
             </select>
         </div>
         <div class="col">
-            <select class="form-select" name="aggregateCol" id="aggregateCol" required>
-                <option selected disabled value="">Choose...</option>
-                <?php
-                    foreach($_SESSION['selectedColumns'] as $col){
-                        echo "<option value='$col'>$col</option>";
-                    }
-                ?>
-            </select>
-        </div>
-        <div class="col">group by</div>
-        <div class="col">
-            <select class="form-select" name="groupbyCol" id="groupbyCol" required>
+            <select class="form-select" name="caseCol" id="caseCol" required>
                 <option selected disabled value="">Choose...</option>
                 <?php
                     foreach($_SESSION['selectedColumns'] as $col){
@@ -50,8 +39,38 @@
                 ?>
             </select>
         </div>
+        <div class="col">is</div>
         <div class="col">
-            <input class="btn btn-outline-success" type="submit" value="Execute Group By" id="btn-exec"></input>
+            <select class="form-select" name="caseOpt" id="caseOpt" required>
+                <option selected disabled value="">Choose...</option>
+                <option value=">">greater than</option>
+                <option value="=">equal to</option>
+                <option value="<">less than</option>
+            </select>
+        </div>
+        <div class="col">
+            <input type="text" id="caseValue" name="caseValue" class="form-control" required>
+        </div>
+        <div class="col">order by</div>
+        <div class="col">
+            <select class="form-select" name="caseColOrderBy" id="caseColOrderBy" required>
+                <option selected disabled value="">Choose...</option>
+                <?php
+                    foreach($_SESSION['selectedColumns'] as $col){
+                        echo "<option value='$col'>$col</option>";
+                    }
+                ?>
+            </select>
+        </div>
+        <div class="col">
+            <select class="form-select" name="caseOrderByType" id="caseOrderByType" required>
+                <option selected disabled value="">Choose...</option>
+                <option value="asc">ascending</option>
+                <option value="desc">descending</option>
+            </select>
+        </div>
+        <div class="col">
+            <input class="btn btn-outline-success" type="submit" value="Execute Case" id="btn-exec"></input>
         </div>
     </form>
     <?php
@@ -62,8 +81,8 @@
             <button class="btn btn-primary" onclick="Export()">Export</button>
             </div>
     <?php
-            GroupBy($conn, $_POST['aggregate'], $_POST['aggregateCol'],$_POST['groupbyCol']);
-            table($_SESSION['unpivoted_groupBy'],$_SESSION['pivoted_groupBy']);
+            CaseFilter($conn,$_POST['caseDataType'],$_POST['caseCol'],$_POST['caseOpt'],$_POST['caseValue'],$_POST['caseColOrderBy'],$_POST['caseOrderByType']);
+            table($_SESSION['unpivoted_case'],$_SESSION['pivoted_case']);
         }
     ?>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>

@@ -1,4 +1,4 @@
-username, password, access
+username, password, allowedDatabases
 user1, 1234, "repgen,advwork1,advwork2,advwork3"
 user2, 1234, "repgen,advwork1"
 user3, 1234, "advwork1"

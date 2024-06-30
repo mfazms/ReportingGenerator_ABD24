@@ -40,35 +40,6 @@ function table($unpivoted, $pivoted){
     echo generateTableHTML($pivoted, true);
     echo '</div>';
 }
-
-function ParseQuery($query){
-    $_SESSION['submittedQuery'] = $query;
-    $query = strtolower($query);
-    $len = strlen($query);
-
-    $i=7;
-    while(substr($query, $i, 4)!=="from"){
-        if($i > $len) break;
-        $i++;
-    }
-    $_SESSION['sel_from']=substr($query, 7, $i-8);
-    echo "[{$_SESSION['sel_from']}]";
-    $_SESSION['from_end']=substr($query, $i+5, $len-$i+4);
-    echo "[{$_SESSION['from_end']}]";
-    $_SESSION['cols'] = [];
-    if($_SESSION['sel_from'] === '*'){
-        foreach (array_keys($_SESSION['unpivoted'][0]) as $header) {
-            array_push($_SESSION['cols'], $header);
-        }
-    }
-    else{
-        $_SESSION['cols'] = explode(",", $_SESSION['sel_from']);
-        $_SESSION['cols'] = array_map("trim", $_SESSION['cols']);
-    }
-    foreach($_SESSION['cols'] as $col){
-        echo "[$col]";
-    }
-}
 function ExecuteQuery($conn, $query, &$unpivoted, &$pivoted)
 {
     $res = $conn->query($query);

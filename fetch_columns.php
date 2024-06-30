@@ -16,10 +16,8 @@
         <label class="form-check-label" for="checkbox_<?php echo $row[0]?>"><?php echo $row[0]?></label>
     </div>
 <?php
-    //  $out .=  '<li>'.$row[0].'</li>'; 
   }
   //default value utk session columns adalah semua column
   //baru ketika ada form submission, di overwrite
   $_SESSION['columns']=$cols;
-  // echo $out;
 ?>

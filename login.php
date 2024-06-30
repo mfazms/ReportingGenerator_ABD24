@@ -57,8 +57,8 @@
         </div>
     </form> -->
     <?php
-    session_start();
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        session_start();
         $req_username = $_POST['username'];
         $req_password = $_POST['password'];
         $req_db_name = $_POST['db_name'];
@@ -70,13 +70,6 @@
             include_once 'database.php';
             header('Location: index.php');
             exit();
-            // if(dbExist($_POST['db_name'])){
-            //     header("Location: index.php");
-            //     exit;
-            // }
-            // else{
-            //     echo "db does not exist";
-            // }
         } else {
             ?>
             <div class='alert alert-danger' role='alert'>
